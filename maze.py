@@ -1,5 +1,6 @@
 import random
 from PIL import Image
+
 imgx = 800; imgy = 800
 image = Image.new("RGB", (imgx, imgy))
 pixels = image.load()

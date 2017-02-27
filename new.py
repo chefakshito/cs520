@@ -8,6 +8,7 @@ grid = [];
 path = [];
 counter = 0;
 index= -1;
+grid2=[];
 
 open_states = BinHeap();
 closed_states = BinHeap();
@@ -171,12 +172,38 @@ def computePath(goal_local, adaptive=False, largeG = False, smallG = False):
             current_state = closed_states.delMin();
             current_state.setH( grid[goal_local[1]][goal_local[0]].getG() - current_state.getG() );     
 
-
-def createGrid(size):
+def reset():
     global original_start;
     global goal;
     global start;
     global index;
+    global counter;
+    global expanded_states;
+    global open_states;
+    global grid;
+    global path;
+    global closed_states;
+
+    grid = [];
+    path = [];
+    counter = 0;
+    index = -1;
+
+    open_states = BinHeap();
+    closed_states = BinHeap();
+    expanded_states = 0;
+
+    original_start = (0,0);
+    goal = (0,0);
+    start = (0,0);
+
+
+def getMaze():
+    global original_start;
+    global goal;
+    global start;
+    global index;
+    global grid2;
 
     m1 = mazeClass();
 
@@ -187,6 +214,12 @@ def createGrid(size):
     original_start = example[2];
     goal = example[3];
     start = original_start;
+    
+
+def createGrid(size):
+    reset();
+    if( len(grid2)==0 ):
+        getMaze();
 
     for j in range(101):
         grid.append([]);
@@ -338,25 +371,25 @@ def traverseBackwardPath():
 
 
 
-print("1. Backward A star");
-print("2. Forward A star");
-print("3. Adaptive Forward A star");
-print("4. Forward A star with larger g-values breaking ties");
-print("5. Forward A star with smaller g-values breaking ties");
+# print("1. Backward A star");
+# print("2. Forward A star");
+# print("3. Adaptive Forward A star");
+# print("4. Forward A star with larger g-values breaking ties");
+# print("5. Forward A star with smaller g-values breaking ties");
 
-choice = input("Enter the choice");
-if (choice==1):
-    backwardAStar();
-elif (choice==2):
-    forwardAStar(False, False, False);
-elif (choice==3):
-    forwardAStar(True, False, False);
-elif (choice==4):
-    forwardAStar(False, True, False);
-elif (choice==5):    
-    forwardAStar(False, False, True);
+# choice = input("Enter the choice");
+# if (choice==1):
+#     backwardAStar();
+# elif (choice==2):
+#     forwardAStar(False, False, False);
+# elif (choice==3):
+#     forwardAStar(True, False, False);
+# elif (choice==4):
+#     forwardAStar(False, True, False);
+# elif (choice==5):    
+#     forwardAStar(False, False, True);
 
+
+forwardAStar(True, False, False);
 print("Expanded states : " + str(expanded_states));
-print("Goal :" +str(goal) );
-print("Start :" + str(original_start) );
-print("Image file number: " + str(index ) ) ;
+
