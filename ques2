@@ -1,0 +1,76 @@
+The effect of ties:
+
+We implemented A* with both specifications - Breaking ties with larger g values, as well as Breaking ties with lower G values.
+
+We found that the larger g values version, in general performs better than the smaller g values version. 
+Here are the results:
+We check the two version on 50 gridworlds created before-hand, using a custom Maze-generator each of size 101x101.
+
+Number of expanded cells, total :
+Greater g values  = 51625
+Smaller g values  = 1356562
+
+Average of expanded cells, averaged over number of grids:
+Greater g values  = 1032
+Smaller g values  = 27131
+
+
+
+Grid maps, in general might have many different paths with the same length. A general A* might explore all such paths that correspond to the same f- value. We can avoid this, by assigning different values to nodes with same f-values, by some other criterion, like their g-values.
+Here we used th following tie-breaking scheme:
+larger g-values = c*f - g
+smaller g-values = f + g
+
+
+Choosing a node with lower g-value means that we will always pick a node closer to the source, whenever there is a tie.
+So we will get closer to the source, which is the opposite to what we want. This explains the higher number of exapanded states.
+
+The opposite is true for larger g-values. In case of a tie, we always pick a node that is farther away from the source(large g-value). Thus, lower number of expanded states.
+
+
+
+
+
+Backward v/s Forward A* :
+
+We found that in general, backwrad A* expanded more nodes than forward A*. In both cases, ties were broken based on higher g-values.
+Because the numbers were very different for different runs, its moot to report their average values. Here are, however the actual values :
+
+Backward A*,  Forward A*
+15601        1155
+321          211
+23112        726
+5159         258
+24512        714
+342          251
+12567        1231
+
+Average values -- 13011       698
+
+In general, which of - Backward A* or Forward A* performs better depends on the distribution of blockages in the grid map. Under the assumption that we dont have any control over how the terrain is laid out, we can not say for sure, which one will perform better.
+
+For example, a blockage that is concave towards the source, will take a longer time to reach with forward A*,  than with Backward A*.
+
+
+
+Adaptive A* vs Repeated Forward A*
+
+Adaptive A* works by updating the h values of all the expanded nodes, after every iteration of teh repeated A* algorithm. Because the update creates a h value that is consistent, it is a save update.
+		h(s) := g(s_goal) - g(s) 
+
+Here are the results that we found:
+
+adaptive----- repeated a*
+1138  1138
+999   1090
+576   576
+873   878
+1879   1956
+average - 1102    1320
+
+
+The results show expanded nodes very similar to each other. However, Adaptive A* does expand fewer nodes on average than A*. This is because, it uses the information gained about the grid in previous iterations as well. So nodes that were considered "bad" in some previous iteration, are avoided. Thus we get a smaller number of expanded states.
+
+
+
+

@@ -193,9 +193,7 @@ def reset():
     closed_states = BinHeap();
     expanded_states = 0;
 
-    original_start = (0,0);
-    goal = (0,0);
-    start = (0,0);
+    start = original_start;
 
 
 def getMaze():
@@ -296,7 +294,7 @@ def traversePath():
                     s_local.increaseActionCosts();
 
         next = path.pop(); 
-        print(next);         
+        # print(next);         
         if ( grid[next[1]][next[0]].getBlockedStatus() ):
             start = current;
             break;
@@ -307,7 +305,7 @@ def traversePath():
         start = current;
 
 
-def backwardAStar():
+def backwardAStar(largeG = False):
     createGrid(GRID_SIZE);
     global counter;
     global open_states;
@@ -331,7 +329,7 @@ def backwardAStar():
         open_states.insert(grid[ goal[1] ][ goal[0] ]);
         
         print("computing ..");
-        computePath(start);#, False, True, False);
+        computePath(start, False, largeG, False);
 
         if( open_states.currentSize == 0 ):
             print "I dont think i can reach the target.";
@@ -389,7 +387,12 @@ def traverseBackwardPath():
 # elif (choice==5):    
 #     forwardAStar(False, False, True);
 
+# forwardAStar(False, True, False);
+forwardAStar(True, True, False);
+pr = expanded_states;
 
-forwardAStar(True, False, False);
-print("Expanded states : " + str(expanded_states));
+forwardAStar(False, True, False);
+pr2 = expanded_states;
+
+print("Expanded states : " + str(pr) + "   "+str(expanded_states));
 
